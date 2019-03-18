@@ -54,6 +54,10 @@ Uuid.randomUuid(random: UuidUtil.cryptoRNG());
 // Generate a v5 (namespace-name-sha1-based) id
 Uuid.fromName('www.google.com', namespace: Uuid.NAMESPACE_URL);
 // -> 'c74a196f-f19d-5ea9-bffd-a2742432fc9c'
+
+// Generate all 0s UUID
+Uuid.empty();
+// -> '00000000-0000-0000-0000-000000000000'
 ```
 
 [See more API](https://pub.dartlang.org/documentation/uuid_enhanced/latest/)

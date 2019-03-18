@@ -124,7 +124,7 @@ void main() {
     });
   });
 
-  group('[Parse/Unparse Tests]', () {
+  group('[General Tests]', () {
     test('Parsing a short/cut-off UUID', () {
       const String id = '00112233445566778899aabbccddeeff';
       expect(Uuid.fromString(id.substring(0, 10)).toString(),
@@ -147,5 +147,22 @@ void main() {
       expect(uuidSet, hasLength(1));
       expect(u0.hashCode, equals(u1.hashCode));
     });
+  });
+
+  test('empty()', () {
+    final Uuid guid = Uuid.empty();
+    expect('[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]',
+        guid.toList().toString());
+  });
+
+  test('toList()', () {
+    final Uuid guid = Uuid.fromString('{00002a43-0000-1000-8000-00805f9b34fb}');
+    expect('[0, 0, 42, 67, 0, 0, 16, 0, 128, 0, 0, 128, 95, 155, 52, 251]',
+        guid.toList().toString());
+  });
+
+  test('toString()', () {
+    final Uuid guid = Uuid.fromString('{00002a43-0000-1000-8000-00805f9b34fb}');
+    expect('00002a43-0000-1000-8000-00805f9b34fb', guid.toString());
   });
 }

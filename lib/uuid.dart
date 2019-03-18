@@ -2,34 +2,32 @@ library uuid;
 
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart' show sha1;
-import 'package:convert/convert.dart' as convert;
+import 'package:convert/convert.dart' show hex;
 import 'package:collection/collection.dart';
 import 'uuid_util.dart';
 
 class Uuid extends UnmodifiableUint8ListView {
   Uuid.fromBytes(Uint8List list) : super(list);
 
-  factory Uuid.fromString(String uuid) {
-    int ii = 0;
+  /// Create an an UUID with all 0s, effectively equivalent to NAMESPACE_NIL
+  factory Uuid.empty() => Uuid.fromBytes(Uint8List(16));
+
+  factory Uuid.fromString(String input) {
+    assert(input != null);
 
     final Uint8List bytes = Uint8List(16);
+    input = input.toLowerCase();
 
-    // Convert to lowercase and replace all hex with bytes then
-    // string.replaceAll() does a lot of work that I don't need, and a manual
-    // regex gives me more control.
     final RegExp regex = RegExp('[0-9a-f]{2}');
-    for (Match match in regex.allMatches(uuid.toLowerCase())) {
-      if (ii < 16) {
-        final String hex = uuid.toLowerCase().substring(match.start, match.end);
-        bytes[ii++] = _hexToByte[hex];
-      }
-    }
+    final List<Match> matches = regex.allMatches(input).toList();
+    assert(matches.length >= 16);
 
-    // Zero out any left over bytes if the string was too short.
-    while (ii < 16) {
-      bytes[ii++] = 0;
+    int i = 0;
+    for (Match match in matches.take(16)) {
+      final String hexString = input.substring(match.start, match.end);
+      bytes[i] = hex.decode(hexString)[0];
+      i++;
     }
-
     return Uuid.fromBytes(bytes);
   }
 
@@ -210,17 +208,6 @@ class Uuid extends UnmodifiableUint8ListView {
     _seedBytes[5]
   ]);
 
-// Easy number <-> hex conversion
-  static final Map<String, int> _hexToByte = <String, int>{};
-  static final List<String> _byteToHex =
-      List<String>(256).asMap().entries.map((MapEntry<int, String> entry) {
-    final Uint8List hex = Uint8List(1);
-    hex[0] = entry.key;
-    final String hexValue = convert.hex.encode(hex);
-    _hexToByte[hexValue] = entry.key;
-    return hexValue;
-  }).toList();
-
   // @todo implement this
   bool get isFromTime {
     return true;
@@ -240,14 +227,12 @@ class Uuid extends UnmodifiableUint8ListView {
   /// outputs a proper UUID string.
   @override
   String toString() {
-    int i = 0;
-    return '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}-'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}-'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}-'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}-'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}'
-        '${_byteToHex[this[i++]]}${_byteToHex[this[i++]]}';
+    return <List<int>>[
+      sublist(0, 4),
+      sublist(4, 6),
+      sublist(6, 8),
+      sublist(8, 10),
+      sublist(10, 16),
+    ].map((List<int> e) => hex.encode(e)).join('-');
   }
 }

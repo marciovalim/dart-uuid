@@ -1,3 +1,7 @@
+v3.0.2
+* refactor `toString` method
+* new api `Uuid.empty()`
+
 v3.0.1
 * use `factory` rather than `static` method to create new `Uuid`
 
@@ -8,7 +12,7 @@ v3.0.0
 * No more singleton, all creating methods are not static ones
 * Proper implementation of `==` and `hashCode`
 * `v1` renamed to `fromTime`,
-  `v4` renamed to `emptyUuid`,
+  `v4` renamed to `randomUuid`,
   `v5` renamed to `fromName`,
   `parse` renamed to `fromString`,
   `unparse` changed to instance method `toString` 
