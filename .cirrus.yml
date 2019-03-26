@@ -10,4 +10,11 @@ test_task:
   format_script: dartfmt **/*.dart -n --set-exit-if-changed
   analyze_script: dartanalyzer --fatal-infos .
   publishable_script: pub publish --dry-run
-  test_script: dart test/*
+  environment:
+    CODECOV_TOKEN: ENCRYPTED[5189b1b685fa1201560e24d28c520ad93e96ff04a271fe6650a689352ebb5ad6a27725621615e0eb51302f1593fb0b10]
+  test_script:
+  - pub global activate coverage
+  - dart --enable-vm-service=8111 --pause-isolates-on-exit test/* &
+  - pub global run coverage:collect_coverage --port=8111 --out=coverage.json --wait-paused --resume-isolates
+  - pub global run coverage:format_coverage --lcov --in=coverage.json --out=lcov.info --packages=.packages --report-on=lib
+  - bash <(curl -s https://codecov.io/bash)
