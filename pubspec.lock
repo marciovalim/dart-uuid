@@ -183,15 +183,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
-  perfectionist:
-    dependency: "direct dev"
-    description:
-      path: "."
-      ref: master
-      resolved-ref: e382f32fa1d2daca2e91d871ae27c3ee1e043ec3
-      url: "https://github.com/marciovalim/perfectionist.git"
-    source: git
-    version: "1.5.0"
   pool:
     dependency: transitive
     description:

@@ -7,14 +7,14 @@ authors:
   - TruongSinh Tran-Nguyen <i@truongsinh.pro>
 homepage: https://github.com/truongsinh/dart-uuid
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 dependencies:
-  crypto: ^3.0.1
-  convert: ^3.0.1
   collection: ^1.15.0
+  convert: ^3.0.0
+  crypto: ^3.0.1
 dev_dependencies:
-  perfectionist:
-    git:
-      url: https://github.com/marciovalim/perfectionist.git
-      ref: master
+  # perfectionist:
+  #   git:
+  #     url: https://github.com/marciovalim/perfectionist.git
+  #     ref: master
   test: ^1.17.10
